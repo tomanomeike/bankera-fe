@@ -1,60 +1,78 @@
 import React, { useEffect, useState } from 'react';
 import CurrencyRow from './components/CurrencyRow';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import  './App.css'
+import Button from 'react-bootstrap/Button';
 
 const URL = 'https://api.coindesk.com/v1/bpi/currentprice.json';
+
 const App = () => {
+  let toAmountInDollars, toAmountInEuro, toAmountInPounds;
   const [inDollars, setInDollars] = useState('');
   const [inEuro, setInEuro] = useState('');
   const [inPounds, setInPounds] = useState('');
   const [amount, setAmount] = useState(1);
   const [amountInFromCurrency, setAmountInFromCurrency] = useState(true);
-  
- console.log(inDollars);
-//  console.log(typeof(amount))
 
   const fetchJson = async (url) => {
     const response = await fetch(url);
     return response.json();
   };
 
-  let toAmountInDollars, toAmountInEuro, toAmountInPounds, fromAmount
+  
   if (amountInFromCurrency) {
-    fromAmount = amount
-    toAmountInDollars = amount *inDollars
-    toAmountInEuro = amount *inEuro
-    toAmountInPounds = amount *inPounds
+    toAmountInDollars = amount * inDollars;
+    toAmountInEuro = amount * inEuro;
+    toAmountInPounds = amount * inPounds;
   }
   useEffect(() => {
-    fetchJson(URL)
-    .then(
-      ({ bpi }) => {
-        setInDollars(bpi.USD.rate_float);
-        setInEuro(bpi.EUR.rate_float);
-        setInPounds(bpi.GBP.rate_float);
-      }
-    );
+    fetchJson(URL).then(({ bpi }) => {
+      setInDollars(bpi.USD.rate_float);
+      setInEuro(bpi.EUR.rate_float);
+      setInPounds(bpi.GBP.rate_float);
+    });
   }, []);
 
-  function handleFromAmountChange(e) {
-    setAmount(e.target.value)
-    setAmountInFromCurrency(true)
+  const handleFromAmountChange =(e) => {
+    setAmount(e.target.value);
+    setAmountInFromCurrency(true);
   }
-const deleteCurrency= ()=>{
-  const el = document.getElementById('1' || '2' || '3');
- el.remove();
-// var elem = document.getElementById("button_" + id);
-// elem.parentNode.removeChild(elem);
-}
 
+  const deleteCurrency1 = () => {
+    const el = document.getElementById('1');
+    el.remove();
+  };
+  const deleteCurrency2 = () => {
+    const el = document.getElementById('2');
+    el.remove();
+  };
 
+  const deleteCurrency3 = () => {
+    const el = document.getElementById('3');
+    el.remove();
+  };
 
   return (
     <div>
-      <CurrencyRow  onChangeAmount={handleFromAmountChange}   amount={amount}/>
-      <div>Price of {amount} Bitcoin</div>
-  <div id="1">USD: {toAmountInDollars.toLocaleString(undefined, {maximumFractionDigits:2})}<button onClick={deleteCurrency}>x</button></div>
-      <div id="2">EURO: {toAmountInEuro} <button onClick={deleteCurrency}>x</button></div>
-      <div id="3">GBP: {toAmountInPounds.toLocaleString(undefined, {maximumFractionDigits:2})}<button onClick={deleteCurrency}>x</button></div>
+      <CurrencyRow onChangeAmount={handleFromAmountChange} amount={amount} />
+      <h3>Price of {amount} Bitcoin</h3>
+      <div id='1'>
+        USD:{' '}
+        {toAmountInDollars.toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+        })}
+        <Button variant="danger" onClick={deleteCurrency1}>x</Button>
+      </div>
+      <div id='2'>
+        EURO: {toAmountInEuro} <Button variant="danger" onClick={deleteCurrency2}>x</Button>
+      </div>
+      <div id='3'>
+        GBP:{' '}
+        {toAmountInPounds.toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+        })}
+        <Button variant="danger" onClick={deleteCurrency3}>x</Button>
+      </div>
     </div>
   );
 };

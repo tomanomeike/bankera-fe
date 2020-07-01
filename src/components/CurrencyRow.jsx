@@ -2,17 +2,13 @@ import React from 'react';
 
 const CurrencyRow = (props) => {
   const {
-    currencyOptions,
-    selectedCurrency,
-    onChangeCurrency,
     onChangeAmount,
     amount,
   } = props;
-  console.log(currencyOptions);
 
   return (
     <React.Fragment>
-      <input type="number" value={amount} onChange={onChangeAmount} />
+      <input type="number" min="0.01" step="0.01" value={amount} onChange={onChangeAmount} />
     </React.Fragment>
   );
 };
