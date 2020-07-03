@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import CurrencyRow from './components/CurrencyRow';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import  './App.css'
+import './App.css';
 import Button from 'react-bootstrap/Button';
+import Table from 'react-bootstrap/Table';
 
 const URL = 'https://api.coindesk.com/v1/bpi/currentprice.json';
 
@@ -19,7 +20,6 @@ const App = () => {
     return response.json();
   };
 
-  
   if (amountInFromCurrency) {
     toAmountInDollars = amount * inDollars;
     toAmountInEuro = amount * inEuro;
@@ -33,10 +33,10 @@ const App = () => {
     });
   }, []);
 
-  const handleFromAmountChange =(e) => {
+  const handleFromAmountChange = (e) => {
     setAmount(e.target.value);
     setAmountInFromCurrency(true);
-  }
+  };
 
   const deleteCurrency1 = () => {
     const el = document.getElementById('1');
@@ -53,27 +53,42 @@ const App = () => {
   };
 
   return (
-    <div>
+    <React.Fragment>
       <CurrencyRow onChangeAmount={handleFromAmountChange} amount={amount} />
       <h3>Price of {amount} Bitcoin</h3>
-      <div id='1'>
-        USD:{' '}
-        {toAmountInDollars.toLocaleString(undefined, {
-          maximumFractionDigits: 2,
-        })}
-        <Button variant="danger" onClick={deleteCurrency1}>x</Button>
-      </div>
-      <div id='2'>
-        EURO: {toAmountInEuro} <Button variant="danger" onClick={deleteCurrency2}>x</Button>
-      </div>
-      <div id='3'>
-        GBP:{' '}
-        {toAmountInPounds.toLocaleString(undefined, {
-          maximumFractionDigits: 2,
-        })}
-        <Button variant="danger" onClick={deleteCurrency3}>x</Button>
-      </div>
-    </div>
+      <Table>
+        <tr id='1'>
+          <td className='tableRow'>
+            USD:{' '}
+            {toAmountInDollars.toLocaleString(undefined, {
+              maximumFractionDigits: 2,
+            })}{' '}
+          </td>
+          <Button variant='danger' onClick={deleteCurrency1}>
+            x
+          </Button>
+        </tr>
+        <tr id='2'>
+          <td>EURO: {toAmountInEuro} </td>
+
+          <Button variant='danger' onClick={deleteCurrency2}>
+            x
+          </Button>
+        </tr>
+        <tr id='3'>
+          <td>
+            GBP:{' '}
+            {toAmountInPounds.toLocaleString(undefined, {
+              maximumFractionDigits: 2,
+            })}
+          </td>
+
+          <Button variant='danger' onClick={deleteCurrency3}>
+            x
+          </Button>
+        </tr>
+      </Table>
+    </React.Fragment>
   );
 };
 

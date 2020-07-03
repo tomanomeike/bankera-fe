@@ -8,7 +8,7 @@ const CurrencyRow = (props) => {
 
   return (
     <React.Fragment>
-      <input type="number" min="0.01" step="0.01" value={amount} onChange={onChangeAmount} />
+      <input className="input" type="number" min="0.01" step="0.01" value={amount} onChange={onChangeAmount} />
     </React.Fragment>
   );
 };
